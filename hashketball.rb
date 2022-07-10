@@ -130,7 +130,9 @@ end
 ALLTEAMS = game_hash
 HOMETEAM = ALLTEAMS[:home]
 AWAYTEAM = ALLTEAMS[:away]
-ALLPLAYERS = HOMETEAM[:players] + AWAYTEAM[:players]
+HOMEPLAYERS = HOMETEAM[:players]
+AWAYPLAYERS = AWAYTEAM[:players]
+ALLPLAYERS = HOMEPLAYERS + AWAYPLAYERS
 
 def num_points_scored(player_name)
   ALLPLAYERS.find { |player| player[:player_name] == player_name }[:points]
@@ -150,9 +152,9 @@ end
 
 def player_numbers(team_name)
   if HOMETEAM[:team_name] == team_name
-    HOMETEAM[:players].map { |player| player[:number] }
+    HOMEPLAYERS.map { |player| player[:number] }
   else
-    AWAYTEAM[:players].map { |player| player[:number] }
+    AWAYPLAYERS.map { |player| player[:number] }
   end
 end
 
@@ -169,8 +171,8 @@ def most_points_scored
 end
 
 def winning_team
-  if HOMETEAM[:players].sum { |player| player[:points] } >
-       AWAYTEAM[:players].sum { |player| player[:points] }
+  if HOMEPLAYERS.sum { |player| player[:points] } >
+       AWAYPLAYERS.sum { |player| player[:points] }
     HOMETEAM[:team_name]
   else
     AWAYTEAM[:team_name]
@@ -184,3 +186,6 @@ end
 def long_name_steals_a_ton
   ALLPLAYERS.max_by { |player| player[:steals] }[:player_name]
 end
+
+binding.pry
+0
