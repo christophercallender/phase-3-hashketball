@@ -1,9 +1,10 @@
-# Write your code below game_hash
+require "pry"
+
 def game_hash
   {
     home: {
       team_name: "Brooklyn Nets",
-      colors: ["Black", "White"],
+      colors: %w[Black White],
       players: [
         {
           player_name: "Alan Anderson",
@@ -64,7 +65,7 @@ def game_hash
     },
     away: {
       team_name: "Charlotte Hornets",
-      colors: ["Turquoise", "Purple"],
+      colors: %w[Turquoise Purple],
       players: [
         {
           player_name: "Jeff Adrien",
@@ -126,4 +127,60 @@ def game_hash
   }
 end
 
-# Write code here
+ALLTEAMS = game_hash
+HOMETEAM = ALLTEAMS[:home]
+AWAYTEAM = ALLTEAMS[:away]
+ALLPLAYERS = HOMETEAM[:players] + AWAYTEAM[:players]
+
+def num_points_scored(player_name)
+  ALLPLAYERS.find { |player| player[:player_name] == player_name }[:points]
+end
+
+def shoe_size(player_name)
+  ALLPLAYERS.find { |player| player[:player_name] == player_name }[:shoe]
+end
+
+def team_colors(team_name)
+  HOMETEAM[:team_name] == team_name ? HOMETEAM[:colors] : AWAYTEAM[:colors]
+end
+
+def team_names
+  return HOMETEAM[:team_name], AWAYTEAM[:team_name]
+end
+
+def player_numbers(team_name)
+  if HOMETEAM[:team_name] == team_name
+    HOMETEAM[:players].map { |player| player[:number] }
+  else
+    AWAYTEAM[:players].map { |player| player[:number] }
+  end
+end
+
+def player_stats(player_name)
+  ALLPLAYERS.find { |player| player[:player_name] == player_name }
+end
+
+def big_shoe_rebounds
+  ALLPLAYERS.max_by { |player| player[:shoe] }[:rebounds]
+end
+
+def most_points_scored
+  ALLPLAYERS.max_by { |player| player[:points] }[:player_name]
+end
+
+def winning_team
+  if HOMETEAM[:players].sum { |player| player[:points] } >
+       AWAYTEAM[:players].sum { |player| player[:points] }
+    HOMETEAM[:team_name]
+  else
+    AWAYTEAM[:team_name]
+  end
+end
+
+def player_with_longest_name
+  ALLPLAYERS.max_by { |player| player[:player_name].length }[:player_name]
+end
+
+def long_name_steals_a_ton
+  ALLPLAYERS.max_by { |player| player[:steals] }[:player_name]
+end
